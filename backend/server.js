@@ -1,0 +1,35 @@
+const express = require('express');
+const cors = require('cors');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+let tasks = [];
+
+// Test route
+app.get('/', (req, res) => {
+  res.send("Backend Working ✅");
+});
+
+// Get all tasks
+app.get('/tasks', (req, res) => {
+  res.json(tasks);
+});
+
+// Add task
+app.post('/task', (req, res) => {
+  const { task } = req.body;
+
+  if (!task || task.trim() === "") {
+    return res.status(400).send("Task is required");
+  }
+
+  tasks.push({ task });
+  res.json({ message: "Task Added", tasks });
+});
+
+app.listen(5000, () => {
+  console.log("✅ Server running on http://localhost:5000");
+});
